@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KreasiKita | Hitung TOPSIS</title>
+
+    <!-- Bootstrap CSs -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light shadow-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img src="gambar/kreasikita.png" alt="" width="42" height="40" class="d-inline-block align-text-top" />
+          <strong>KreasiKita</strong>
+        </a>
+
+        <span class="navbar-text text-dark"><strong>Proyek Sistem Pendukung Keputusan</strong></span>
+      </div>
+    </nav>
+    <br /><br />
+
+    <section class="hero container-fluid">
+      <center>
+        <div>
+          <p style="font-size: 25px"><strong>Perhitungan TOPSIS</strong></p>
+          <p style="font-size: 20px"><strong>Sistem Pendukung Keputusan untuk Menentukan Pemilihan Layanan Cloud (Cloud Service) dengan Menggunakan Metode TOPSIS</strong></p>
+        </div>
+      </center>
+      <hr class="my-4" />
+
+      <div>
+        <h4>Pengumpulan Data</h4>
+        <div class="ms-5 container">
+          <p>Tabel Data Kuesioner:</p>
+          <table class="table table-hover" border="1">
+            <tr class="table-success">
+              <th>Kriteria</th>
+              <th>Bobot</th>
+            </tr>
+            <tr>
+              <td>CPU</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>RAM</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Storage</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Harga</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Tipe Server</td>
+              <td>5</td>
+            </tr>
+          </table>
+          <br />
+
+          <p>Tabel Data Alternatif:</p>
+          <table class="table table-hover" border="1">
+            <tr class="table-success text-center">
+              <th>Alternatif</th>
+              <th>C1 (CPU)</th>
+              <th>C2 (RAM)</th>
+              <th>C3 (Storage)</th>
+              <th>C4 (Harga)(IDR 1000/bulan)</th>
+              <th>C5 (Tipe Server)</th>
+            </tr>
+            <tr class="text-center">
+              <td>A1 ICH</td>
+              <td>16</td>
+              <td>64</td>
+              <td>510</td>
+              <td>3637.5</td>
+              <td>4</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A2 ICH</td>
+              <td>8</td>
+              <td>256</td>
+              <td>960</td>
+              <td>3000</td>
+              <td>3</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A3 ICH</td>
+              <td>32</td>
+              <td>64</td>
+              <td>500</td>
+              <td>5500</td>
+              <td>4</td>
+            </tr>
+            
+            <tr class="text-center">
+              <td>A4 ICH</td>
+              <td>8</td>
+              <td>64</td>
+              <td>2000</td>
+              <td>5000</td>
+              <td>4</td>
+            </tr>
+            
+            <tr class="text-center">
+              <td>A5 ICH</td>
+              <td>12</td>
+              <td>16</td>
+              <td>200</td>
+              <td>3000</td>
+              <td>1</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A6 Azure</td>
+              <td>12</td>
+              <td>48</td>
+              <td>96</td>
+              <td>6000</td>
+              <td>4</td>
+            </tr>
+            <tr class="text-center">
+              <td>A7 Amazon</td>
+              <td>8</td>
+              <td>32</td>
+              <td>640</td>
+              <td>2700</td>
+              <td>4</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A8 Amazon</td>
+              <td>16</td>
+              <td>64</td>
+              <td>1280</td>
+              <td>6321</td>
+              <td>4</td>
+            </tr>
+          </table><br>
+
+          <p>Tabel Bobot Numerik:</p>
+          <table class="table table-hover" border="1">
+            <tr class="table-success">
+              <th>Tipe Server</th>
+              <th>Bobot</th>
+            </tr>
+            <tr>
+              <td>Server VPS</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Cloud VPS</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Shared Hosting</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Dedicated Server</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Bare Metal Server</td>
+              <td>3</td>
+            </tr>
+          </table>
+        </div>
+      </div><br>
+      <hr>
+
+      <div>
+        <h4>Implementasi TOPSIS</h4>
+        <div class="ms-5 container">
+          <h5>Normalisasi Matriks Keputusan</h5>
+          <p>Tabel Matriks Ternormalisasi:</p>
+          <table class="table table-hover" border="1">
+            <tr class="table-success text-center">
+              <th>Alternatif</th>
+              <th>C1 (CPU)</th>
+              <th>C2 (RAM)</th>
+              <th>C3 (Storage)</th>
+              <th>C4 (Harga)</th>
+              <th>C5 (Tipe Server)</th>
+            </tr>
+            <tr class="text-center">
+              <td>A1 ICH</td>
+                <td>0.3563483225</td>
+                <td>0.218870262</td>
+                <td>0.1858677109</td>
+                <td>0.2792082469</td>
+                <td>0.3885143449</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A2 ICH</td>
+                <td>0.1781741613</td>
+                <td>0.8754810483</td>
+                <td>0.3498686322</td>
+                <td>0.2302748428</td>
+                <td>0.2913857587</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A3 ICH</td>
+                <td>0.712696645</td>
+                <td>0.218870262</td>
+                <td>0.1822232459</td>
+                <td>0.4221705451</td>
+                <td>0.3885143449</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A4 ICH</td>
+                <td>0.1781741613</td>
+                <td>0.218870262</td>
+                <td>0.7288929838</td>
+                <td>0.3837914046</td>
+                <td>0.3885143449</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A5 ICH</td>
+                <td>0.2672612419</td>
+                <td>0.05471756552</td>
+                <td>0.07288929838</td>
+                <td>0.2302748428</td>
+                <td>0.09712858624</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A6 Azure</td>
+                <td>0.2672612419</td>
+                <td>0.1641526965</td>
+                <td>0.03498686322</td>
+                <td>0.4605496855</td>
+                <td>0.3885143449</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A7 Amazon</td>
+                <td>0.1781741613</td>
+                <td>0.109435131</td>
+                <td>0.2332457548</td>
+                <td>0.2072473585</td>
+                <td>0.3885143449</td>
+            </tr>
+
+            <tr class="text-center">
+              <td>A8 Amazon</td>
+                <td>0.3563483225</td>
+                <td>0.2188702621</td>
+                <td>0.4664915096</td>
+                <td>0.4851890937</td>
+                <td>0.3885143449</td>
+            </tr>
+          </table><br>
+
+            <h5>Normalisasi Matriks Terbobot</h5>
+            <p>Tabel Normalisasi Terbobot:</p>
+            <table class="table table-hover" border="1">
+              <tr class="table-success text-center">
+                <th>Alternatif</th>
+                <th>C1 (CPU)</th>
+                <th>C2 (RAM)</th>
+                <th>C3 (Storage)</th>
+                <th>C4 (Harga)</th>
+                <th>C5 (Tipe Server)</th>
+              </tr>
+              <tr class="text-center">
+                <td>A1 ICH</td>
+                  <td>0.1781741613</td>
+                  <td>1.09435131</td>
+                  <td>0.9293385543</td>
+                  <td>1.396041234</td>
+                  <td>1.942571725</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A2 ICH</td>
+                  <td>0.8908708064</td>
+                  <td>4.377405241</td>
+                  <td>1.749343161</td>
+                  <td>1.151374214</td>
+                  <td>1.456928794</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A3 ICH</td>
+                  <td>3.563483225</td>
+                  <td>1.09435131</td>
+                  <td>0.9111162297</td>
+                  <td>2.110852725</td>
+                  <td>1.942571725</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A4 ICH</td>
+                  <td>0.8908708064</td>
+                  <td>1.09435131</td>
+                  <td>3.644464919</td>
+                  <td>1.918957023</td>
+                  <td>1.942571725</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A5 ICH</td>
+                  <td>1.33630621</td>
+                  <td>0.2735878276</td>
+                  <td>0.3644464919</td>
+                  <td>1.151374214</td>
+                  <td>0.4856429312</td>
+                </tr>
+
+                <tr class="text-center">
+                  <td>A6 Azure</td>
+                    <td>1.33630621</td>
+                    <td>0.8207634827</td>
+                    <td>0.1749343161</td>
+                    <td>2.302748428</td>
+                    <td>1.942571725</td>
+                </tr>
+
+                <tr class="text-center">
+                  <td>A7 Amazon</td>
+                    <td>0.8908708064</td>
+                    <td>0.5471756552</td>
+                    <td>1.166228774</td>
+                    <td>1.036236792</td>
+                    <td>1.942571725</td>
+                </tr>
+
+                <tr class="text-center">
+                  <td>A8 Amazon</td>
+                    <td>1.781741613</td>
+                    <td>1.09435131</td>
+                    <td>2.332457548</td>
+                    <td>2.425945469</td>
+                    <td>1.942571725</td>
+                </tr>
+            </table><br>
+
+            <h5>Matriks Ideal Positif dan Negatif (A)</h5>
+            <p>Tabel Matriks Ideal Positif dan Negatif:</p>
+            <table class="table table-hover" border="1">
+              <tr class="table-success text-center">
+                <th></th>
+                <th>CPU (y1)</th>
+                <th>RAM (y2)</th>
+                <th>Storage (y3)</th>
+                <th>Harga (y4)</th>
+                <th>Tipe Server (y5)</th>
+              </tr>
+              <tr class="text-center">
+                <td>A+</td>
+                  <td>3.563483225</td>
+                  <td>4.377405241</td>
+                  <td>3.644464919</td>
+                  <td>2.425945469</td>
+                  <td>1.942571725</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A-</td>
+                  <td>0.8908708064</td>
+                  <td>0.2735878276</td>
+                  <td>0.1749343161</td>
+                  <td>1.036236792</td>
+                  <td>0.4856429312</td>
+              </tr>
+            </table><br>
+
+            <h5>Jarak Alternatif Terhadap Solusi Ideal Positif dan Negatif (D)</h5>
+            <p>Tabel Jarak Solusi Ideal Positif dan Negatif:</p>
+            <table class="table table-hover" border="1">
+              <tr class="table-success text-center">
+                <th>Alternatif</th>
+                <th>D+</th>
+                <th>D-</th>
+              </tr>
+              <tr class="text-center">
+                <td>A1 ICH</td>
+                  <td>4.731348666</td>
+                  <td>2.070876623</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A2 ICH</td>
+                  <td>3.548904699</td>
+                  <td>4.502969401</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A3 ICH</td>
+                  <td>4.283564124</td>
+                  <td>3.411145637</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A4 ICH</td>
+                  <td>4.263606166</td>
+                  <td>3.95134557</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A5 ICH</td>
+                  <td>6.025556331</td>
+                  <td>0.4975783245</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A6 Azure</td>
+                  <td>5.446360085</td>
+                  <td>2.055360583</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A7 Amazon</td>
+                  <td>5.466851052</td>
+                  <td>1.783299333</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A8 Amazon</td>
+                  <td>3.959092021</td>
+                  <td>3.190006536</td>
+              </tr>
+            </table><br>
+
+            <h5>Nilai Preferensi (V)</h5>
+            <p>Tabel Nilai Preferensi:</p>
+            <table class="table table-hover" border="1">
+              <tr class="table-success text-center">
+                <th>Alternatif</th>
+                <th>Nilai</th>
+                <th>Ranking</th>
+              </tr>
+              <tr class="text-center">
+                <td>A1 ICH</td>
+                  <td>0.3044410521</td>
+                  <td>5</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A2 ICH</td>
+                  <td>0.5592448845</td>
+                  <td>1</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A3 ICH</td>
+                  <td>0.4433105007</td>
+                  <td>4</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A4 ICH</td>
+                  <td>0.4809943743</td>
+                  <td>2</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A5 ICH</td>
+                  <td>0.07627902086</td>
+                  <td>8</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A6 Azure</td>
+                  <td>0.2739852194</td>
+                  <td>6</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A7 Amazon</td>
+                  <td>0.2459672198</td>
+                  <td>7</td>
+              </tr>
+
+              <tr class="text-center">
+                <td>A8 Amazon</td>
+                  <td>0.4462110168</td>
+                  <td>3</td>
+              </tr>
+            </table><br>
+
+            <p>Tabel Ranking Akhir:</p>
+            <table class="table table-hover" border="1">
+              <tr class="table-success text-center">
+                  <th>Alternatif</th>
+                  <th>Nilai</th>
+                  <th>Ranking</th>
+              </tr>
+              <tr class="text-center">
+                  <td>A2 ICH</td>
+                  <td>0.5592448845</td>
+                  <td>1</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A4 ICH</td>
+                  <td>0.4809943743</td>
+                  <td>2</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A8 Amazon</td>
+                  <td>0.4462110168</td>
+                  <td>3</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A3 ICH</td>
+                  <td>0.4433105007</td>
+                  <td>4</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A1 ICH</td>
+                  <td>0.3044410521</td>
+                  <td>5</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A6 Azure</td>
+                  <td>0.2739852194</td>
+                  <td>6</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A7 Amazon</td>
+                  <td>0.2459672198</td>
+                  <td>7</td>
+              </tr>
+
+              <tr class="text-center">
+                  <td>A5 ICH</td>
+                  <td>0.07627902086</td>
+                  <td>8</td>
+              </tr>
+            </table><br>
+
+            <h5>Hasil Akhir</h5>
+            <p>Alternatif terbaik adalah A2 ICH dengan nilai 0.5592448845.</p>
+      </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
